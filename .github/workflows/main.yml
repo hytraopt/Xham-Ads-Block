@@ -24,8 +24,14 @@ jobs:
           distribution: 'temurin'
           java-version: '17'
 
-      - name: Grant execute permission for gradlew
-        run: chmod +x gradlew
+      - name: Create Gradle wrapper if missing
+        run: |
+          if [ ! -f gradlew ]; then
+            echo "gradlew not found, generating wrapper..."
+            # Use Gradle to generate wrapper
+            gradle wrapper --gradle-version 8.6
+          fi
+          chmod +x gradlew
 
       - name: Build with Gradle
         run: ./gradlew assembleDebug
